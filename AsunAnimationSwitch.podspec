@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 
 
   s.name         = "AsunAnimationSwitch"
-  s.version      = "1.0.2"
+  s.version      = "1.0.3"
   s.summary       = "点击Switch显示正确动画Swift4.0版本"
 
 
