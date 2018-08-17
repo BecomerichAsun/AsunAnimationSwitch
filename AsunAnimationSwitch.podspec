@@ -3,12 +3,12 @@ Pod::Spec.new do |s|
 
 
   s.name         = "AsunAnimationSwitch"
-  s.version      = "1.0.1"
-  s.summary       = "点击Switch动画Swift4.0版本"
+  s.version      = "1.0.2"
+  s.summary       = "点击Switch显示正确动画Swift4.0版本"
 
 
  s.description   = <<-DESC
-    点击Switch动画Swift版本,详情看主页
+    点击Switch动画Swift版本,详情看主页~
                        DESC
 
   s.homepage  = 'https://github.com/BecomerichAsun/AsunAnimationSwitch'
