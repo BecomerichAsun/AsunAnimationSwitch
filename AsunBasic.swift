@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol AsunBasic {
+public protocol AsunBasic {
     /**  线宽  **/
     var lineWidth: CGFloat {get set}
     /**  动画结束位置  **/
@@ -35,40 +35,40 @@ protocol AsunBasic {
     mutating func setTrailColor(color:UIColor)
 }
 
-struct AsunBasicSet:AsunBasic {
-    var strokeColor: UIColor = UIColor.red
-    var trailStrokeColor: UIColor = UIColor.blue
-    var finalStrokeEndForCheckmark: CGFloat = 0.85
-    var finalStrokeStartForCheckmark: CGFloat = 0.3
-    var checkmarkBounceAmount: CGFloat = 0.1
-    var animationDuration: CFTimeInterval = 0.8
-    var lineWidth:CGFloat = 2
+public struct AsunBasicSet:AsunBasic {
+    public var strokeColor: UIColor = UIColor.red
+    public var trailStrokeColor: UIColor = UIColor.blue
+    public var finalStrokeEndForCheckmark: CGFloat = 0.85
+    public var finalStrokeStartForCheckmark: CGFloat = 0.3
+    public var checkmarkBounceAmount: CGFloat = 0.1
+    public var animationDuration: CFTimeInterval = 0.8
+    public var lineWidth:CGFloat = 2
     
-    mutating func setEndValue(value: CGFloat) {
+    public mutating func setEndValue(value: CGFloat) {
         finalStrokeEndForCheckmark = value
     }
     
-    mutating func setStartValue(value: CGFloat) {
+    public mutating func setStartValue(value: CGFloat) {
         finalStrokeStartForCheckmark = value
     }
     
-    mutating func setAddValue(value: CGFloat) {
+    public  mutating func setAddValue(value: CGFloat) {
         checkmarkBounceAmount = value
     }
     
-    mutating func setDuration(value: CGFloat) {
+    public  mutating func setDuration(value: CGFloat) {
         animationDuration = CFTimeInterval(value)
     }
     
-    mutating func setLineWidth(value: CGFloat) {
+    public mutating func setLineWidth(value: CGFloat) {
         lineWidth = value
     }
     
-    mutating func setStrokeColor(color: UIColor) {
+    public mutating func setStrokeColor(color: UIColor) {
         strokeColor = color
     }
     
-    mutating func setTrailColor(color: UIColor) {
+    public mutating func setTrailColor(color: UIColor) {
         trailStrokeColor = color
     }
 }
