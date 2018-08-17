@@ -11,17 +11,14 @@ import UIKit
 
 public class AsunAnimationSwitch: UIControl {
     
-    lazy var Basic:AsunBasicSet = AsunBasicSet()
-
+    public var Basic:AsunBasicSet = AsunBasicSet()
+    
     private var trailCircle: CAShapeLayer = CAShapeLayer()
     private var circle: CAShapeLayer = CAShapeLayer()
     private var checkmark: CAShapeLayer = CAShapeLayer()
-    
     private var checkmarkMidPoint: CGPoint = CGPoint.zero
-    
     private var selected_internal: Bool = false
     
-
     public override var isSelected: Bool {
         get {
             return selected_internal
@@ -107,7 +104,7 @@ public class AsunAnimationSwitch: UIControl {
         self.circle.strokeColor = Basic.strokeColor.cgColor
         self.checkmark.strokeColor = Basic.strokeColor.cgColor
         self.trailCircle.strokeColor = Basic.trailStrokeColor.cgColor
-
+        
         self.isSelected = false
         
         self.addTarget(self, action: #selector(onTouchUpInside), for: UIControlEvents.touchUpInside)
