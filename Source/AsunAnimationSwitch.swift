@@ -1,6 +1,6 @@
 
 //
-//  AsunAnimationSwitch.Swift
+//  AsunSwitch.Swift
 //  AsunAnimationSwitch
 //
 //  Created by Asun on 2018/8/14.
