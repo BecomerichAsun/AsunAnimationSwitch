@@ -11,11 +11,8 @@ import UIKit
 
 public class AsunAnimationSwitch: UIControl {
     
-    let finalStrokeEndForCheckmark: CGFloat = 0.85
-    let finalStrokeStartForCheckmark: CGFloat = 0.3
-    let checkmarkBounceAmount: CGFloat = 0.1
-    let animationDuration: CFTimeInterval = 0.3
-    
+    lazy var Basic:AsunBasicSet = AsunBasicSet()
+
     private var trailCircle: CAShapeLayer = CAShapeLayer()
     private var circle: CAShapeLayer = CAShapeLayer()
     private var checkmark: CAShapeLayer = CAShapeLayer()
@@ -24,27 +21,7 @@ public class AsunAnimationSwitch: UIControl {
     
     private var selected_internal: Bool = false
     
-    public var lineWidth: CGFloat = 2.0 {
-        didSet {
-            self.circle.lineWidth = lineWidth
-            self.checkmark.lineWidth = lineWidth
-            self.trailCircle.lineWidth = lineWidth
-        }
-    }
-    
-    public var strokeColor: UIColor = UIColor.black {
-        didSet {
-            self.circle.strokeColor = strokeColor.cgColor
-            self.checkmark.strokeColor = strokeColor.cgColor
-        }
-    }
-    
-    public var trailStrokeColor: UIColor = UIColor.gray {
-        didSet {
-            self.trailCircle.strokeColor = trailStrokeColor.cgColor
-        }
-    }
-    
+
     public override var isSelected: Bool {
         get {
             return selected_internal
@@ -120,14 +97,17 @@ public class AsunAnimationSwitch: UIControl {
         self.backgroundColor = UIColor.clear
         
         configureShapeLayer(shapeLayer: trailCircle)
-        trailCircle.strokeColor = trailStrokeColor.cgColor
         
         configureShapeLayer(shapeLayer: circle)
-        circle.strokeColor = strokeColor.cgColor
-        
         configureShapeLayer(shapeLayer: checkmark)
-        checkmark.strokeColor = strokeColor.cgColor
         
+        self.circle.lineWidth = Basic.lineWidth
+        self.checkmark.lineWidth = Basic.lineWidth
+        self.trailCircle.lineWidth = Basic.lineWidth
+        self.circle.strokeColor = Basic.strokeColor.cgColor
+        self.checkmark.strokeColor = Basic.strokeColor.cgColor
+        self.trailCircle.strokeColor = Basic.trailStrokeColor.cgColor
+
         self.isSelected = false
         
         self.addTarget(self, action: #selector(onTouchUpInside), for: UIControlEvents.touchUpInside)
@@ -155,7 +135,7 @@ public class AsunAnimationSwitch: UIControl {
     private func configureShapeLayer(shapeLayer: CAShapeLayer) {
         shapeLayer.lineJoin = kCALineJoinRound
         shapeLayer.lineCap = kCALineCapRound
-        shapeLayer.lineWidth = self.lineWidth
+        shapeLayer.lineWidth = Basic.lineWidth
         shapeLayer.fillColor = UIColor.clear.cgColor
         self.layer.addSublayer(shapeLayer)
     }
@@ -171,8 +151,8 @@ public class AsunAnimationSwitch: UIControl {
             circle.strokeStart = 0.0
             circle.strokeEnd = 1.0
         } else {
-            checkmark.strokeEnd = finalStrokeEndForCheckmark
-            checkmark.strokeStart = finalStrokeStartForCheckmark
+            checkmark.strokeEnd = Basic.finalStrokeEndForCheckmark
+            checkmark.strokeStart = Basic.finalStrokeStartForCheckmark
             trailCircle.opacity = 1.0
             circle.strokeStart = 0.0
             circle.strokeEnd = 0.0
@@ -182,16 +162,16 @@ public class AsunAnimationSwitch: UIControl {
     }
     
     private func addAnimationsForSelected(selected: Bool) {
-        let circleAnimationDuration = animationDuration * 0.5
+        let circleAnimationDuration = Basic.animationDuration * 0.5
         
-        let checkmarkEndDuration = animationDuration * 0.8
+        let checkmarkEndDuration = Basic.animationDuration * 0.8
         let checkmarkStartDuration = checkmarkEndDuration - circleAnimationDuration
-        let checkmarkBounceDuration = animationDuration - checkmarkEndDuration
+        let checkmarkBounceDuration = Basic.animationDuration - checkmarkEndDuration
         
         let checkmarkAnimationGroup = CAAnimationGroup()
         checkmarkAnimationGroup.isRemovedOnCompletion = false
         checkmarkAnimationGroup.fillMode = kCAFillModeForwards
-        checkmarkAnimationGroup.duration = animationDuration
+        checkmarkAnimationGroup.duration = Basic.animationDuration
         checkmarkAnimationGroup.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         
         let checkmarkStrokeEnd = CAKeyframeAnimation(keyPath: "strokeEnd")
@@ -201,10 +181,10 @@ public class AsunAnimationSwitch: UIControl {
         checkmarkStrokeEnd.calculationMode = kCAAnimationPaced
         
         if selected {
-            checkmarkStrokeEnd.values = [NSNumber(value: 0.0), NSNumber(value: Float(finalStrokeEndForCheckmark + checkmarkBounceAmount)), NSNumber(value: Float(finalStrokeEndForCheckmark))]
+            checkmarkStrokeEnd.values = [NSNumber(value: 0.0), NSNumber(value: Float(Basic.finalStrokeEndForCheckmark + Basic.checkmarkBounceAmount)), NSNumber(value: Float(Basic.finalStrokeEndForCheckmark))]
             checkmarkStrokeEnd.keyTimes = [NSNumber(value: 0.0), NSNumber(value: checkmarkEndDuration), NSNumber(value: checkmarkEndDuration + checkmarkBounceDuration)]
         } else {
-            checkmarkStrokeEnd.values = [ NSNumber(value: Float(finalStrokeEndForCheckmark)), NSNumber(value: Float(finalStrokeEndForCheckmark + checkmarkBounceAmount)), NSNumber(value: -0.1)]
+            checkmarkStrokeEnd.values = [ NSNumber(value: Float(Basic.finalStrokeEndForCheckmark)), NSNumber(value: Float(Basic.finalStrokeEndForCheckmark + Basic.checkmarkBounceAmount)), NSNumber(value: -0.1)]
             checkmarkStrokeEnd.keyTimes = [NSNumber(value: 0.0), NSNumber(value: checkmarkBounceDuration), NSNumber(value: checkmarkEndDuration + checkmarkBounceDuration)]
         }
         
@@ -215,10 +195,10 @@ public class AsunAnimationSwitch: UIControl {
         checkmarkStrokeStart.calculationMode = kCAAnimationPaced
         
         if selected {
-            checkmarkStrokeStart.values = [ NSNumber(value: 0.0), NSNumber(value: Float(finalStrokeStartForCheckmark + checkmarkBounceAmount)), NSNumber(value: Float(finalStrokeStartForCheckmark))]
+            checkmarkStrokeStart.values = [ NSNumber(value: 0.0), NSNumber(value: Float(Basic.finalStrokeStartForCheckmark + Basic.checkmarkBounceAmount)), NSNumber(value: Float(Basic.finalStrokeStartForCheckmark))]
             checkmarkStrokeStart.keyTimes = [NSNumber(value: 0.0), NSNumber(value: checkmarkStartDuration), NSNumber(value: checkmarkStartDuration + checkmarkBounceDuration)]
         } else {
-            checkmarkStrokeStart.values = [NSNumber(value: Float(finalStrokeStartForCheckmark)), NSNumber(value: Float(finalStrokeStartForCheckmark + checkmarkBounceAmount)), NSNumber(value: 0.0)]
+            checkmarkStrokeStart.values = [NSNumber(value: Float(Basic.finalStrokeStartForCheckmark)), NSNumber(value: Float(Basic.finalStrokeStartForCheckmark + Basic.checkmarkBounceAmount)), NSNumber(value: 0.0)]
             checkmarkStrokeStart.keyTimes = [NSNumber(value: 0.0), NSNumber(value: checkmarkBounceDuration), NSNumber(value: checkmarkStartDuration + checkmarkBounceDuration)]
         }
         
@@ -230,7 +210,7 @@ public class AsunAnimationSwitch: UIControl {
         checkmark.add(checkmarkAnimationGroup, forKey: "checkmarkAnimation")
         
         let circleAnimationGroup = CAAnimationGroup()
-        circleAnimationGroup.duration = animationDuration
+        circleAnimationGroup.duration = Basic.animationDuration
         circleAnimationGroup.isRemovedOnCompletion = false
         circleAnimationGroup.fillMode = kCAFillModeForwards
         circleAnimationGroup.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
@@ -243,7 +223,7 @@ public class AsunAnimationSwitch: UIControl {
             circleStrokeEnd.fromValue = NSNumber(value: 1.0)
             circleStrokeEnd.toValue = NSNumber(value: -0.1)
         } else {
-            circleStrokeEnd.beginTime = animationDuration - circleAnimationDuration
+            circleStrokeEnd.beginTime = Basic.animationDuration - circleAnimationDuration
             
             circleStrokeEnd.fromValue = NSNumber(value: 0.0)
             circleStrokeEnd.toValue = NSNumber(value: 1.0)
@@ -255,7 +235,7 @@ public class AsunAnimationSwitch: UIControl {
         circle.add(circleAnimationGroup, forKey: "circleStrokeEnd")
         
         let trailCircleColor = CABasicAnimation(keyPath: "opacity")
-        trailCircleColor.duration = animationDuration
+        trailCircleColor.duration = Basic.animationDuration
         if selected {
             trailCircleColor.fromValue = NSNumber(value: 0.0)
             trailCircleColor.toValue = NSNumber(value: 1.0)
