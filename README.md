@@ -10,6 +10,9 @@
 > You can import this framework using cocoapods
 >
 > 
+> pod 'AsunAnimationSwitch','~> 1.0.5'
+>
+>
 
 
 # The effect
