@@ -26,22 +26,35 @@ public class AsunAnimationSwitch: UIControl {
         set {
             super.isSelected = newValue
             //todo
+            self.setSelected(isSelected: newValue, animated: false)
         }
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupViews()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        configure()
+        setupViews()
     }
     
     public override func awakeFromNib() {
-        super.awakeFromNib()
+        setupViews()
+    }
+    
+    public override func layoutSubviews() {
         configure()
+    }
+    
+    public func setupViews() {
+        self.backgroundColor = UIColor.clear
+        configureShapeLayer(shapeLayer: trailCircle)
+        configureShapeLayer(shapeLayer: circle)
+        configureShapeLayer(shapeLayer: checkmark)
+        self.isSelected = false
+        self.addTarget(self, action: #selector(onTouchUpInside), for: UIControlEvents.touchUpInside)
     }
     
     public override func layoutSublayers(of layer: CALayer) {
@@ -90,24 +103,12 @@ public class AsunAnimationSwitch: UIControl {
     }
     
     private func configure() {
-        
-        self.backgroundColor = UIColor.clear
-        
-        configureShapeLayer(shapeLayer: trailCircle)
-        
-        configureShapeLayer(shapeLayer: circle)
-        configureShapeLayer(shapeLayer: checkmark)
-        
         self.circle.lineWidth = Basic.lineWidth
         self.checkmark.lineWidth = Basic.lineWidth
         self.trailCircle.lineWidth = Basic.lineWidth
         self.circle.strokeColor = Basic.strokeColor.cgColor
         self.checkmark.strokeColor = Basic.strokeColor.cgColor
         self.trailCircle.strokeColor = Basic.trailStrokeColor.cgColor
-        
-        self.isSelected = false
-        
-        self.addTarget(self, action: #selector(onTouchUpInside), for: UIControlEvents.touchUpInside)
     }
     
     @objc func onTouchUpInside(sender: AnyObject) {
@@ -245,10 +246,5 @@ public class AsunAnimationSwitch: UIControl {
         trailCircleColor.fillMode = kCAFillModeForwards
         trailCircleColor.isRemovedOnCompletion = false
         trailCircle.add(trailCircleColor, forKey: "trailCircleColor")
-    }
-    
+    }    
 }
-
-
-
-
